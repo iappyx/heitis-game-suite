@@ -49,3 +49,4 @@ project_knowledge.md
 /tool/l10n_manager.dart
 /tool/gen_icon.dart
 /tool/build_release_apk.sh
+/start_session.sh
