@@ -1,0 +1,6 @@
+#include "../../Flutter/Flutter-Debug.xcconfig"
+#include "Warnings.xcconfig"
+
+// Xcode 27 lipo -verify_arch fails with 2 archs, which breaks Flutter 3.27 universal
+// builds. Build Apple Silicon only (Intel Macs not supported); remove after a Flutter upgrade.
+ARCHS = arm64

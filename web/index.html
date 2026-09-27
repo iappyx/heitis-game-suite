@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Heiti's Game Suite — play together, no internet needed">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Heiti's Game Suite">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Heiti's Game Suite</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <script>
+    // Hosted mode: keep the phone screen on while playing in the browser.
+    // The Screen Wake Lock API needs https, which a local host doesn't have,
+    // so play a tiny silent looping video (the phone won't sleep during
+    // video playback). It must start from a user gesture (first tap).
+    (function () {
+      var v = document.createElement('video');
+      v.src = 'keepawake.mp4';
+      v.muted = true; v.loop = true;
+      v.setAttribute('playsinline', ''); v.setAttribute('muted', '');
+      v.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0.01;left:0;top:0;pointer-events:none;';
+      function start() {
+        if (!v.isConnected) document.body.appendChild(v);
+        var p = v.play(); if (p && p.catch) p.catch(function () {});
+      }
+      document.addEventListener('pointerup', start, { passive: true });
+      document.addEventListener('touchend', start, { passive: true });
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible' && v.isConnected) start();
+      });
+    })();
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+Heiti's Game Suite
+Copyright (c) 2026 iappyx — released under the MIT License (see LICENSE).
+
+This app bundles the following third-party material:
+
+--------------------------------------------------------------------------------
+Noto Color Emoji  (assets/fonts/NotoColorEmoji-Regular.ttf)
+Copyright 2013 Google LLC
+Licensed under the SIL Open Font License, Version 1.1.
+The full license text ships with the font: assets/fonts/OFL.txt
+https://github.com/googlefonts/noto-emoji
+--------------------------------------------------------------------------------
+Roboto  (assets/fonts/roboto/*.ttf — used by the browser version)
+Copyright Google Inc.
+Licensed under the Apache License, Version 2.0.
+The full license text ships with the font: assets/fonts/roboto/LICENSE.txt
+https://github.com/googlefonts/roboto
+--------------------------------------------------------------------------------
+Sound effects  (assets/sounds/*.ogg)
+From Kenney (https://kenney.nl): Interface Sounds, Digital Audio and
+Casino Audio. Released under Creative Commons Zero (CC0 1.0) — no attribution
+required; credited here with thanks.
+--------------------------------------------------------------------------------
+Flutter and Dart packages
+The Flutter framework and the pub packages listed in pubspec.yaml are used under
+their own licenses (BSD, MIT and Apache-2.0). Flutter bundles their license
+texts into the app automatically.
+--------------------------------------------------------------------------------
+
+The app icon is rendered from a Noto Color Emoji glyph (use of the font in
+images is permitted by the OFL).
+
+Everything else — the game implementations, rule texts, word lists, graphics
+(drawn in code) and networking — is original to this project.

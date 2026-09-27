@@ -1,0 +1,51 @@
+# ── OS / editors ─────────────────────────────────────────────────────────────
+.DS_Store
+*.swp
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.claude/
+
+# ── Flutter / Dart ───────────────────────────────────────────────────────────
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+**/doc/api/
+flutter_*.log
+*.log
+app.*.symbols
+app.*.map.json
+migrate_working_dir/
+
+# ── Android ──────────────────────────────────────────────────────────────────
+.gradle/
+local.properties
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# ── Signing key (never commit) ───────────────────────────────────────────────
+*.keystore
+*.jks
+key.properties
+
+# ── Hosted mode build output / tooling ───────────────────────────────────────
+/tool/.venv/
+/assets/webclient/webclient.zip
+
+# ── Archives / backups ───────────────────────────────────────────────────────
+*.zip
+*.apk
+
+# ── Personal / development files (stay at home, never published) ────────────
+CLAUDE.md
+project_knowledge.md
+/test/
+/tool/l10n_manager.dart
+/tool/gen_icon.dart
+/tool/build_release_apk.sh

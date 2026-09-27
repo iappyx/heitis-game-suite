@@ -1,0 +1,72 @@
+name: heitis_game_suite
+description: Offline multiplayer game suite for families
+publish_to: none
+version: 1.0.0+140
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.2.0
+  image_picker: ^1.0.4
+  nearby_connections: ^4.1.0
+  nearby_service: ^0.2.1
+  permission_handler: ^11.0.1
+  package_info_plus: ^8.0.0
+  confetti: ^0.7.0
+  audioplayers: ^6.0.0
+  web_socket_channel: ^3.0.3
+  qr_flutter: ^4.1.0
+  archive: ^4.3.0
+
+dependency_overrides:
+  # nearby_connections only declares Android support in its pubspec.
+  # We use a conditional export stub so the package is never actually
+  # imported on iOS. This override silences Flutter's platform check.
+  nearby_connections: ^4.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  macos:
+    generate: true
+    image_path: "assets/app_icon_1024.png"
+  image_path: "assets/app_icon_1024.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: NotoColorEmoji
+      fonts:
+        - asset: assets/fonts/NotoColorEmoji-Regular.ttf
+    # Used by the browser version (Hosted mode) so it never needs the internet
+    # for fonts; the apps keep using the system font.
+    - family: RobotoWeb
+      fonts:
+        - asset: assets/fonts/roboto/Roboto-Regular.ttf
+        - asset: assets/fonts/roboto/Roboto-Italic.ttf
+          style: italic
+        - asset: assets/fonts/roboto/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/roboto/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/roboto/Roboto-Black.ttf
+          weight: 900
+
+  assets:
+    - assets/sounds/
+    - assets/fonts/
+    - assets/fonts/roboto/
+    # Hosted mode: the browser client, packaged by tool/build_webclient.sh
+    - assets/webclient/
