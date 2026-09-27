@@ -92,4 +92,6 @@ It bundles some third-party material; see [NOTICE](NOTICE):
 - **Sound effects** — from [Kenney](https://kenney.nl) (Interface Sounds, Digital Audio, Casino Audio), public domain (CC0). Credited with thanks.
 - **Flutter and Dart packages** — used under their own licenses (BSD, MIT, Apache-2.0); the app lists them under *About → All licenses*.
 
-Everything else — the games, word lists, graphics and networking — is original to this project.
+## Support
+
+If you find Heiti's Game Suite useful, consider [buying me a coffee](https://ko-fi.com/iappyx).

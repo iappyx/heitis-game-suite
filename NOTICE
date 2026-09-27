@@ -29,6 +29,3 @@ texts into the app automatically.
 
 The app icon is rendered from a Noto Color Emoji glyph (use of the font in
 images is permitted by the OFL).
-
-Everything else — the game implementations, rule texts, word lists, graphics
-(drawn in code) and networking — is original to this project.
