@@ -12,6 +12,7 @@ class GameResultBanner extends StatefulWidget {
   final int winnerIdx;       // -1 = draw
   final List<({String label, String value})>? scores;
   final VoidCallback? onFirstRender;
+  final String? note;          // optional explanation, e.g. why it's a draw
 
   const GameResultBanner({
     super.key,
@@ -19,6 +20,7 @@ class GameResultBanner extends StatefulWidget {
     required this.winnerIdx,
     this.scores,
     this.onFirstRender,
+    this.note,
   });
 
   @override State<GameResultBanner> createState() => _GameResultBannerState();
@@ -61,6 +63,12 @@ class _GameResultBannerState extends State<GameResultBanner> {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
+        if (widget.note != null && widget.note!.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Text(widget.note!,
+            style: const TextStyle(color: kMuted, fontSize: 13),
+            textAlign: TextAlign.center),
+        ],
         if (widget.scores != null && widget.scores!.isNotEmpty) ...[
           const SizedBox(height: 8),
           Wrap(

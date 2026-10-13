@@ -9,6 +9,11 @@ class StringsSkaken {
   final String stalemate;   // "Stalemate — draw!"
   final String drawInsufficient; // draw: not enough pieces to checkmate
   final String drawFiftyMoves;   // draw: 50 moves without capture/pawn move
+  final String stalemateWhy;     // result banner: what stalemate means
+  final String stalemateWarnTitle; // dialog before a move that stalemates
+  final String stalemateWarnBody;
+  final String stalemateWarnOther; // button: pick another move
+  final String stalemateWarnPlay;  // button: play it anyway
   final String whitesTurn;
   final String blacksTurn;
 
@@ -24,6 +29,11 @@ class StringsSkaken {
     required this.stalemate,
     required this.drawInsufficient,
     required this.drawFiftyMoves,
+    required this.stalemateWhy,
+    required this.stalemateWarnTitle,
+    required this.stalemateWarnBody,
+    required this.stalemateWarnOther,
+    required this.stalemateWarnPlay,
     required this.whitesTurn,
     required this.blacksTurn,
     required this.yourMove,
@@ -46,6 +56,11 @@ class StringsSkaken {
     stalemate:   'Pat — lykspul!',
     drawInsufficient: 'Te min stikken foar skaakmat — lykspul!',
     drawFiftyMoves:   '50 setten sûnder slaan of pionset — lykspul!',
+    stalemateWhy:     'Pat: de kening stiet net skaak, mar kin nergens mear hinne. Neffens de regels is dat lykspul.',
+    stalemateWarnTitle: 'Pas op: dit wurdt pat',
+    stalemateWarnBody:  'Nei dizze set stiet de kening fan dyn tsjinstanner net skaak, mar kin er gjin inkelde set mear dwaan. Dat is pat, en pat is lykspul. Om te winnen moatst skaakmat jaan.',
+    stalemateWarnOther: 'Oare set kieze',
+    stalemateWarnPlay:  'Dochs dwaan',
     whitesTurn:  'Wyt is oan bar',
     blacksTurn:  'Swart is oan bar',
     yourMove:    'Dyn beurt',
@@ -61,6 +76,11 @@ class StringsSkaken {
     stalemate:   'Pat — gelijkspel!',
     drawInsufficient: 'Te weinig stukken voor schaakmat — gelijkspel!',
     drawFiftyMoves:   '50 zetten zonder slaan of pionzet — gelijkspel!',
+    stalemateWhy:     'Pat: de koning staat niet schaak, maar kan nergens meer heen. Volgens de regels is dat gelijkspel.',
+    stalemateWarnTitle: 'Let op: dit wordt pat',
+    stalemateWarnBody:  'Na deze zet staat de koning van je tegenstander niet schaak, maar kan hij geen enkele zet meer doen. Dat is pat, en pat is gelijkspel. Om te winnen moet je schaakmat geven.',
+    stalemateWarnOther: 'Andere zet kiezen',
+    stalemateWarnPlay:  'Toch doen',
     whitesTurn:  'Wit is aan de beurt',
     blacksTurn:  'Zwart is aan de beurt',
     yourMove:    'Jouw beurt',
@@ -76,6 +96,11 @@ class StringsSkaken {
     stalemate:   'Stalemate — draw!',
     drawInsufficient: 'Not enough pieces to checkmate — draw!',
     drawFiftyMoves:   '50 moves without a capture or pawn move — draw!',
+    stalemateWhy:     'Stalemate: the king is not in check, but has no move left. By the rules that is a draw.',
+    stalemateWarnTitle: 'Careful: this is stalemate',
+    stalemateWarnBody:  'After this move your opponent\'s king is not in check, but has no legal move left. That is stalemate, and stalemate is a draw. To win, you need to give checkmate.',
+    stalemateWarnOther: 'Pick another move',
+    stalemateWarnPlay:  'Play it anyway',
     whitesTurn:  'White\'s turn',
     blacksTurn:  'Black\'s turn',
     yourMove:    'Your move',

@@ -1,7 +1,7 @@
 name: heitis_game_suite
 description: Offline multiplayer game suite for families
 publish_to: none
-version: 1.0.0+140
+version: 1.0.0+141
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

@@ -298,7 +298,10 @@ class _SkakenState extends State<SkakenScreen> with GameMixin {
     return others.every((o) => o[0] == _B && o[1] == others[0][1]);
   }
 
-  void _applyMove(int fr, int fc, int tr, int tc, {int? promote, bool broadcast = true}) {
+  /// Moves the piece on the board and updates castling rights and the en-passant
+  /// column. Returns whether something was captured. Used for real moves and for
+  /// trying a move out (see [_wouldStalemate]).
+  bool _moveOnBoard(int fr, int fc, int tr, int tc, int? promote) {
     final captured = _board[tr][tc] != _EMPTY ||
         (_board[fr][fc].abs() == _P && fc != tc && _board[tr][tc] == _EMPTY); // en passant
     final piece = _board[fr][fc];
@@ -336,11 +339,33 @@ class _SkakenState extends State<SkakenScreen> with GameMixin {
     if (tr == 0 && tc == 7) _bRhMoved = true;
     if (tr == 0 && tc == 0) _bRaMoved = true;
 
-    // 50-move rule clock: reset on capture or pawn move
-    _halfMoves = (captured || absPiece == _P) ? 0 : _halfMoves + 1;
-
     // En passant target
     _epCol = (absPiece == _P && (tr - fr).abs() == 2) ? fc : null;
+    return captured;
+  }
+
+  /// True if this move leaves the opponent not in check but without any legal
+  /// move (stalemate = draw). The position is restored afterwards.
+  bool _wouldStalemate(int fr, int fc, int tr, int tc) {
+    final board = _board.map((r) => r.toList()).toList();
+    final flags = [_wKMoved, _wRaMoved, _wRhMoved, _bKMoved, _bRaMoved, _bRhMoved];
+    final ep = _epCol, turn = _whiteTurn;
+    _moveOnBoard(fr, fc, tr, tc, null);
+    _whiteTurn = !turn;
+    final stalemate = !_hasAnyMove(_whiteTurn) && !_isInCheck(_whiteTurn);
+    _board = board;
+    _wKMoved = flags[0]; _wRaMoved = flags[1]; _wRhMoved = flags[2];
+    _bKMoved = flags[3]; _bRaMoved = flags[4]; _bRhMoved = flags[5];
+    _epCol = ep; _whiteTurn = turn;
+    return stalemate;
+  }
+
+  void _applyMove(int fr, int fc, int tr, int tc, {int? promote, bool broadcast = true}) {
+    final isPawn = _board[fr][fc].abs() == _P;
+    final captured = _moveOnBoard(fr, fc, tr, tc, promote);
+
+    // 50-move rule clock: reset on capture or pawn move
+    _halfMoves = (captured || isPawn) ? 0 : _halfMoves + 1;
 
     _whiteTurn = !_whiteTurn;
     _selRow = _selCol = null;
@@ -401,15 +426,11 @@ class _SkakenState extends State<SkakenScreen> with GameMixin {
       // Try to move
       final isValid = _validMoves.any((m) => m[0] == r && m[1] == c);
       if (isValid) {
-        setState(() => _applyMove(_selRow!, _selCol!, r, c));
-        if (_net.isSolo && _winner == 0) {
-          _ai?.takeTurn(
-            board: _board.map((row) => row.toList()).toList(),
-            whiteTurn: _whiteTurn,
-            wKMoved: _wKMoved, wRaMoved: _wRaMoved, wRhMoved: _wRhMoved,
-            bKMoved: _bKMoved, bRaMoved: _bRaMoved, bRhMoved: _bRhMoved,
-            epCol: _epCol,
-          );
+        final fr = _selRow!, fc = _selCol!;
+        if (_wouldStalemate(fr, fc, r, c)) {
+          _confirmStalemate(fr, fc, r, c);
+        } else {
+          _commitMove(fr, fc, r, c);
         }
       } else if (_friendly(_board[r][c])) {
         // Re-select
@@ -423,6 +444,46 @@ class _SkakenState extends State<SkakenScreen> with GameMixin {
     }
   }
 
+
+  void _commitMove(int fr, int fc, int tr, int tc) {
+    setState(() => _applyMove(fr, fc, tr, tc));
+    if (_net.isSolo && _winner == 0) {
+      _ai?.takeTurn(
+        board: _board.map((row) => row.toList()).toList(),
+        whiteTurn: _whiteTurn,
+        wKMoved: _wKMoved, wRaMoved: _wRaMoved, wRhMoved: _wRhMoved,
+        bKMoved: _bKMoved, bRaMoved: _bRaMoved, bRhMoved: _bRhMoved,
+        epCol: _epCol,
+      );
+    }
+  }
+
+  /// Stalemate is a draw — ask before playing a move that gives it away.
+  void _confirmStalemate(int fr, int fc, int tr, int tc) {
+    showDialog(context: context, builder: (ctx) => AlertDialog(
+      backgroundColor: kBg2,
+      title: Text(L.skaken.stalemateWarnTitle, style: const TextStyle(color: kText)),
+      content: Text(L.skaken.stalemateWarnBody, style: const TextStyle(color: kMuted)),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: Text(L.skaken.stalemateWarnPlay, style: const TextStyle(color: kMuted)),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.pop(ctx, true),
+          child: Text(L.skaken.stalemateWarnOther),
+        ),
+      ],
+    )).then((pickOther) {
+      // Dismissed (tap outside / back) = nothing happens, piece stays selected
+      if (!mounted || pickOther == null) return;
+      if (pickOther == true) {
+        setState(() { _selRow = _selCol = null; _validMoves = []; });
+      } else if (_isMyTurn && _board[fr][fc] != _EMPTY) {
+        _commitMove(fr, fc, tr, tc);
+      }
+    });
+  }
 
   void _sendSync() {
     _net.send('SKA_SYNC', {
@@ -511,6 +572,8 @@ class _SkakenState extends State<SkakenScreen> with GameMixin {
           GameResultBanner(
             players: widget.players,
             winnerIdx: _winner == 3 ? -1 : _winner - 1,
+            note: _winner != 3 ? null
+                : _statusMsg == L.skaken.stalemate ? L.skaken.stalemateWhy : _statusMsg,
             onFirstRender: () { final wi = _winner == 3 ? -1 : _winner - 1; fireConfettiOnce(wi); recordResult('skaken', wi); if (_net.isHost) _session.advanceGame(); },
           ),
           GameOverActions(players: widget.players, onReset: () {
